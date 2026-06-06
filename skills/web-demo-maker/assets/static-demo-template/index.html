@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Web Demo Maker Template</title>
+    <style>
+      :root {
+        --ink: #111827;
+        --muted: #64748b;
+        --line: #d8dee8;
+        --panel: #fff;
+        --bg: #f6f8fb;
+        --accent: #0f766e;
+        --soft: #ccfbf1;
+        --warn: #b45309;
+        --good: #047857;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+      button, input { font: inherit; }
+      .shell { min-height: 100vh; display: grid; grid-template-columns: 260px minmax(0, 1fr); }
+      .sidebar { background: #0b1220; color: #e5e7eb; padding: 24px; }
+      .brand { font-size: 20px; font-weight: 750; margin-bottom: 28px; }
+      .nav { display: grid; gap: 8px; }
+      .nav button {
+        width: 100%;
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: #cbd5e1;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+      }
+      .nav button.active { color: #fff; background: rgba(255, 255, 255, 0.1); }
+      .main { min-width: 0; padding: 28px; }
+      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+      h1 { margin: 0; font-size: 28px; line-height: 1.15; }
+      .subtitle { margin: 6px 0 0; color: var(--muted); }
+      .primary {
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        background: var(--accent);
+        color: #fff;
+        cursor: pointer;
+      }
+      .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+      .card, .workspace { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+      .card { padding: 16px; }
+      .metric { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+      .metric strong { font-size: 26px; }
+      .pill { border-radius: 999px; padding: 4px 9px; font-size: 12px; background: var(--soft); color: var(--accent); }
+      .workspace { overflow: hidden; }
+      .toolbar { display: flex; justify-content: space-between; gap: 12px; padding: 14px; border-bottom: 1px solid var(--line); }
+      .toolbar input { min-width: 0; width: 280px; max-width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+      th { color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+      tr:last-child td { border-bottom: 0; }
+      .status { border-radius: 999px; padding: 4px 8px; font-size: 12px; font-weight: 700; }
+      .status.good { background: #dcfce7; color: var(--good); }
+      .status.warn { background: #fef3c7; color: var(--warn); }
+      @media (max-width: 860px) {
+        .shell { grid-template-columns: 1fr; }
+        .sidebar { padding: 16px; }
+        .nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .main { padding: 18px; }
+        .topbar { align-items: flex-start; flex-direction: column; }
+        .grid { grid-template-columns: 1fr; }
+        th:nth-child(3), td:nth-child(3) { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">DemoOS</div>
+        <nav class="nav" aria-label="Demo sections">
+          <button class="active" data-view="overview">Overview</button>
+          <button data-view="pipeline">Pipeline</button>
+          <button data-view="settings">Settings</button>
+        </nav>
+      </aside>
+      <main class="main">
+        <div class="topbar">
+          <div>
+            <h1>Replace this with the product promise</h1>
+            <p class="subtitle">Show the working demo first. Keep supporting copy short and specific.</p>
+          </div>
+          <button class="primary" id="primaryAction">Run demo</button>
+        </div>
+        <section class="grid" aria-label="Key metrics">
+          <div class="card"><div class="metric"><strong>84%</strong><span class="pill">Live</span></div><p class="subtitle">Primary outcome metric</p></div>
+          <div class="card"><div class="metric"><strong>12</strong><span class="pill">Queued</span></div><p class="subtitle">Useful sample state</p></div>
+          <div class="card"><div class="metric"><strong>3.2m</strong><span class="pill">Saved</span></div><p class="subtitle">Credible benefit</p></div>
+        </section>
+        <section class="workspace" aria-label="Interactive workspace">
+          <div class="toolbar">
+            <input id="search" type="search" placeholder="Filter records" />
+            <button class="primary" id="addRow">Add sample</button>
+          </div>
+          <table>
+            <thead><tr><th>Name</th><th>Status</th><th>Owner</th><th>Value</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+    <script>
+      const records = [
+        { name: "Onboarding flow", status: "Ready", owner: "Maya", value: "$12.4k" },
+        { name: "Pricing test", status: "Review", owner: "Nick", value: "$8.1k" },
+        { name: "Demo export", status: "Ready", owner: "Ari", value: "$4.7k" }
+      ];
+      const rows = document.querySelector("#rows");
+      const search = document.querySelector("#search");
+      function render() {
+        const query = search.value.toLowerCase();
+        rows.innerHTML = "";
+        records.filter((r) => JSON.stringify(r).toLowerCase().includes(query)).forEach((record) => {
+          const statusClass = record.status === "Ready" ? "good" : "warn";
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${record.name}</td><td><span class="status ${statusClass}">${record.status}</span></td><td>${record.owner}</td><td>${record.value}</td>`;
+          rows.appendChild(tr);
+        });
+      }
+      document.querySelectorAll(".nav button").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".nav button").forEach((item) => item.classList.remove("active"));
+          button.classList.add("active");
+        });
+      });
+      document.querySelector("#addRow").addEventListener("click", () => {
+        records.unshift({ name: "New demo item", status: "Review", owner: "You", value: "$1.9k" });
+        render();
+      });
+      document.querySelector("#primaryAction").addEventListener("click", () => {
+        records[0].status = records[0].status === "Ready" ? "Review" : "Ready";
+        render();
+      });
+      search.addEventListener("input", render);
+      render();
+    </script>
+  </body>
+</html>
