@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Demo Maker"
+  short_description: "Build polished, usable webpage demos fast"
+  default_prompt: "Use $web-demo-maker to turn my product idea into a polished, responsive webpage demo."
