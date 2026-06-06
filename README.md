@@ -1,6 +1,6 @@
 # Web Demo Maker Skill
 
-[![skills.sh](https://skills.sh/b/YOUR_GITHUB_USERNAME/web-demo-maker-skill)](https://skills.sh/YOUR_GITHUB_USERNAME/web-demo-maker-skill)
+[![skills.sh](https://skills.sh/b/nickwaong/web-demo-maker-skill)](https://skills.sh/nickwaong/web-demo-maker-skill)
 
 Web Demo Maker helps AI coding agents turn rough product ideas into polished, usable webpage demos. It is designed for founders, product builders, designers, indie hackers, and consultants who need a credible prototype fast.
 
@@ -19,13 +19,13 @@ Web Demo Maker helps AI coding agents turn rough product ideas into polished, us
 After this repository is public on GitHub, users should be able to install it with:
 
 ```bash
-npx skills add YOUR_GITHUB_USERNAME/web-demo-maker-skill --skill web-demo-maker
+npx skills add nickwaong/web-demo-maker-skill --skill web-demo-maker
 ```
 
 For GitHub Copilot compatible hosts:
 
 ```bash
-gh skill install YOUR_GITHUB_USERNAME/web-demo-maker-skill web-demo-maker
+gh skill install nickwaong/web-demo-maker-skill web-demo-maker
 ```
 
 ## Example Prompt
